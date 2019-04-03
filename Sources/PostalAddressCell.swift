@@ -34,7 +34,7 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
     @IBOutlet open var cityTextField: UITextField?
     @IBOutlet open var secondSeparatorView: UIView?
     @IBOutlet open var countryTextField: UITextField?
-    @IBOutlet weak var streetSeparatorView: UIView!
+    @IBOutlet open var streetSeparatorView: UIView!
     
     @IBOutlet weak var postalPercentageConstraint: NSLayoutConstraint?
     
@@ -71,7 +71,7 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
     
     open override func setup() {
         super.setup()
-        height = { 120 }
+        height = { 144 }
         selectionStyle = .none
         
         postalPercentageConstraint?.constant = (row as? PostalAddressRowConformance)?.postalAddressPercentage ?? 0.5
@@ -104,6 +104,9 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
         
         streetTextField?.text = row.value?.street
         streetTextField?.keyboardType = .asciiCapable
+        
+        secondStreetTextField?.text = row.value?.moreStreet
+        secondStreetTextField?.keyboardType = .asciiCapable
         
         stateTextField?.text = row.value?.state
         stateTextField?.keyboardType = .asciiCapable
@@ -220,7 +223,8 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
             switch(textField){
             case let field where field == streetTextField:
                 row.value?.street = nil
-                
+            case let field where field == secondStreetTextField:
+                row.value?.moreStreet = nil
             case let field where field == stateTextField:
                 row.value?.state = nil
                 
@@ -246,7 +250,9 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
             case let field where field == streetTextField:
                 useFormatterDuringInput = rowConformance.streetUseFormatterDuringInput
                 valueFormatter = rowConformance.streetFormatter
-                
+            case let field where field == secondStreetTextField:
+                useFormatterDuringInput = rowConformance.streetUseFormatterDuringInput
+                valueFormatter = rowConformance.streetFormatter
             case let field where field == stateTextField:
                 useFormatterDuringInput = rowConformance.stateUseFormatterDuringInput
                 valueFormatter = rowConformance.stateFormatter
@@ -275,6 +281,8 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
                     switch(textField){
                     case let field where field == streetTextField:
                         row.value?.street = value.pointee as? String
+                    case let field where field == secondStreetTextField:
+                        row.value?.moreStreet = value.pointee as? String
                     case let field where field == stateTextField:
                         row.value?.state = value.pointee as? String
                     case let field where field == postalCodeTextField:
@@ -304,6 +312,8 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
             switch(textField){
             case let field where field == streetTextField:
                 row.value?.street = nil
+            case let field where field == secondStreetTextField:
+                row.value?.moreStreet = nil
             case let field where field == stateTextField:
                 row.value?.state = nil
             case let field where field == postalCodeTextField:
@@ -321,6 +331,8 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
         switch(textField){
         case let field where field == streetTextField:
             row.value?.street = textValue
+        case let field where field == secondStreetTextField:
+            row.value?.moreStreet = textValue
         case let field where field == stateTextField:
             row.value?.state = textValue
         case let field where field == postalCodeTextField:

@@ -16,6 +16,7 @@ import Eureka
  */
 public protocol PostalAddressType: Equatable {
     var street: String? { get set }
+    var moreStreet: String? { get set }
     var state: String? { get set }
     var postalCode: String? { get set }
     var city: String? { get set }
@@ -23,12 +24,13 @@ public protocol PostalAddressType: Equatable {
 }
 
 public func == <T: PostalAddressType>(lhs: T, rhs: T) -> Bool {
-    return lhs.street == rhs.street && lhs.state == rhs.state && lhs.postalCode == rhs.postalCode && lhs.city == rhs.city && lhs.country == rhs.country
+    return lhs.street == rhs.street && lhs.moreStreet == rhs.moreStreet && lhs.state == rhs.state && lhs.postalCode == rhs.postalCode && lhs.city == rhs.city && lhs.country == rhs.country
 }
 
 /// Row type for PostalAddressRow
 public struct PostalAddress: PostalAddressType {
     public var street: String?
+    public var moreStreet: String?
     public var state: String?
     public var postalCode: String?
     public var city: String?
@@ -36,8 +38,9 @@ public struct PostalAddress: PostalAddressType {
     
     public init(){}
     
-    public init(street: String?, state: String?, postalCode: String?, city: String?, country: String?) {
+    public init(street: String?, moreStreet: String?, state: String?, postalCode: String?, city: String?, country: String?) {
         self.street = street
+        self.moreStreet = moreStreet
         self.state = state
         self.postalCode = postalCode
         self.city = city
