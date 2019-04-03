@@ -16,6 +16,7 @@ import Eureka
  */
 public protocol PostalAddressCellConformance {
     var streetTextField: UITextField? { get }
+    var secondStreetTextField: UITextField? { get }
     var stateTextField: UITextField? { get }
     var postalCodeTextField: UITextField? { get }
     var cityTextField: UITextField? { get }
@@ -25,14 +26,15 @@ public protocol PostalAddressCellConformance {
 /// Base class that implements the cell logic for the PostalAddressRow
 open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAddressCellConformance, UITextFieldDelegate {
     
-    @IBOutlet weak var streetTextField: UITextField?
-    @IBOutlet weak var secondStreetTextField: UITextField?
+    @IBOutlet open var streetTextField: UITextField?
+    @IBOutlet open var secondStreetTextField: UITextField?
     @IBOutlet open var firstSeparatorView: UIView?
     @IBOutlet open var stateTextField: UITextField?
     @IBOutlet open var postalCodeTextField: UITextField?
     @IBOutlet open var cityTextField: UITextField?
     @IBOutlet open var secondSeparatorView: UIView?
     @IBOutlet open var countryTextField: UITextField?
+    @IBOutlet weak var streetSeparatorView: UIView!
     
     @IBOutlet weak var postalPercentageConstraint: NSLayoutConstraint?
     
@@ -48,12 +50,14 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
     
     open override func awakeFromNib() {
         super.awakeFromNib()
-        textFieldOrdering = [streetTextField, postalCodeTextField, cityTextField, stateTextField, countryTextField]
+        textFieldOrdering = [streetTextField, secondStreetTextField, postalCodeTextField, cityTextField, stateTextField, countryTextField]
     }
     
     deinit {
         streetTextField?.delegate = nil
         streetTextField?.removeTarget(self, action: nil, for: .allEvents)
+        secondStreetTextField?.delegate = nil
+        secondStreetTextField?.removeTarget(self, action: nil, for: .allEvents)
         stateTextField?.delegate = nil
         stateTextField?.removeTarget(self, action: nil, for: .allEvents)
         postalCodeTextField?.delegate = nil
@@ -82,7 +86,7 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
             textField?.font = .preferredFont(forTextStyle: UIFont.TextStyle.body)
         }
         
-        for separator in [firstSeparatorView, secondSeparatorView] {
+        for separator in [firstSeparatorView, secondSeparatorView, streetSeparatorView] {
             separator?.backgroundColor = .gray
         }
     }
@@ -115,6 +119,7 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
         
         if let rowConformance = row as? PostalAddressRowConformance {
             setPlaceholderToTextField(textField: streetTextField, placeholder: rowConformance.streetPlaceholder)
+            setPlaceholderToTextField(textField: secondStreetTextField, placeholder: rowConformance.streetPlaceholder)
             setPlaceholderToTextField(textField: stateTextField, placeholder: rowConformance.statePlaceholder)
             setPlaceholderToTextField(textField: postalCodeTextField, placeholder: rowConformance.postalCodePlaceholder)
             setPlaceholderToTextField(textField: cityTextField, placeholder: rowConformance.cityPlaceholder)
@@ -135,6 +140,7 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
     open override func cellCanBecomeFirstResponder() -> Bool {
         return !row.isDisabled && (
             streetTextField?.canBecomeFirstResponder == true ||
+                secondStreetTextField?.canBecomeFirstResponder == true ||
                 stateTextField?.canBecomeFirstResponder == true ||
                 postalCodeTextField?.canBecomeFirstResponder == true ||
                 cityTextField?.canBecomeFirstResponder == true ||
@@ -148,6 +154,7 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
     
     open override func cellResignFirstResponder() -> Bool {
         return streetTextField?.resignFirstResponder() ?? true
+            && secondStreetTextField?.resignFirstResponder() ?? true
             && stateTextField?.resignFirstResponder() ?? true
             && postalCodeTextField?.resignFirstResponder() ?? true
             && stateTextField?.resignFirstResponder() ?? true
