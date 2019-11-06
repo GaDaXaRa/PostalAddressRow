@@ -79,6 +79,7 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
         imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
         
         for textField in textFieldOrdering {
+            textField?.addTarget(self, action: #selector(PostalAddressCell.textFieldDidChange(_:)), for: .editingDidBegin)
             textField?.addTarget(self, action: #selector(PostalAddressCell.textFieldDidChange(_:)), for: .editingChanged)
             textField?.textAlignment =  .left
             textField?.clearButtonMode =  .whileEditing
