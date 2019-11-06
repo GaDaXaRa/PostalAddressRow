@@ -69,6 +69,7 @@ public protocol PostalAddressRowConformance: PostalAddressFormatterConformance {
     var postalAddressPercentage : CGFloat? { get set }
     var placeholderColor : UIColor? { get set }
     var streetPlaceholder : String? { get set }
+    var secondStreetPlaceholder : String? { get set }
     var statePlaceholder : String? { get set }
     var postalCodePlaceholder : String? { get set }
     var cityPlaceholder : String? { get set }
@@ -90,6 +91,8 @@ open class _PostalAddressRow<Cell: CellType>: Row<Cell>, PostalAddressRowConform
     
     /// The placeholder for the street textField
     open var streetPlaceholder : String?
+    
+    open var secondStreetPlaceholder : String?
     
     /// The placeholder for the state textField
     open var statePlaceholder : String?

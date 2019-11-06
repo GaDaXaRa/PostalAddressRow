@@ -122,7 +122,7 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
         
         if let rowConformance = row as? PostalAddressRowConformance {
             setPlaceholderToTextField(textField: streetTextField, placeholder: rowConformance.streetPlaceholder)
-            setPlaceholderToTextField(textField: secondStreetTextField, placeholder: rowConformance.streetPlaceholder)
+            setPlaceholderToTextField(textField: secondStreetTextField, placeholder: rowConformance.secondStreetPlaceholder)
             setPlaceholderToTextField(textField: stateTextField, placeholder: rowConformance.statePlaceholder)
             setPlaceholderToTextField(textField: postalCodeTextField, placeholder: rowConformance.postalCodePlaceholder)
             setPlaceholderToTextField(textField: cityTextField, placeholder: rowConformance.cityPlaceholder)
